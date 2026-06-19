@@ -133,23 +133,68 @@ ul { list-style: none; }
 @media (min-width: 861px) { .burger { display: none; } }
 
 /* ---------- hero ---------- */
-.hero { position: relative; padding: 104px 0 40px; overflow: hidden; }
+.hero { position: relative; padding: 96px 0 44px; overflow: hidden; }
 .hero-grid { display: grid; gap: 26px; }
+/* ensure headline always visible even mid-animation */
+.hero h1 { opacity: 1 !important; }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px; align-self: start;
   background: var(--paper); border: 1px solid var(--line); color: var(--pine);
   padding: 7px 14px 7px 9px; border-radius: var(--r-pill); font-size: 13px; font-weight: 600; box-shadow: var(--sh-1);
 }
 .hero-badge .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px var(--teal-soft); }
-.hero h1 { font-size: clamp(38px, 11vw, 76px); letter-spacing: -0.025em; }
+.hero h1 { font-size: clamp(38px, 11vw, 76px); letter-spacing: -0.025em; margin: 18px 0 20px; }
 .hero h1 .accent { color: var(--teal); }
-.hero .lede { color: var(--slate); font-size: 17px; max-width: 56ch; }
+.hero .lede { color: var(--slate); font-size: 17px; max-width: 56ch; margin-bottom: 6px; }
 .hero-actions { display: flex; flex-direction: column; gap: 12px; }
+
+/* hero micro-details strip — fills the gap between badge and headline */
+.hero-meta {
+  display: flex; align-items: center; gap: 10px; margin: 14px 0 0;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--teal);
+}
+.hero-meta::before {
+  content: ""; display: block; width: 28px; height: 2px;
+  background: var(--grad); border-radius: 2px; flex: none;
+}
+
+/* availability pill */
+.avail-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(15,148,136,.1); border: 1px solid rgba(15,148,136,.25);
+  color: var(--pine); border-radius: var(--r-pill);
+  padding: 6px 13px; font-size: 13px; font-weight: 600; margin: 0 0 4px;
+}
+.avail-pill .blink {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--teal-bright);
+  box-shadow: 0 0 0 0 rgba(25,194,176,.7);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%   { box-shadow: 0 0 0 0 rgba(25,194,176,.7); }
+  60%  { box-shadow: 0 0 0 7px rgba(25,194,176,.0); }
+  100% { box-shadow: 0 0 0 0 rgba(25,194,176,.0); }
+}
+
+/* hero specialties mini-row below trust bullets */
+.hero-specs {
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px dashed var(--line);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.hero-spec {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13px; color: var(--ink-soft);
+}
+.hero-spec .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-soft);
+  border: 2px solid var(--teal); flex: none; margin-top: 5px; }
+.hero-spec .dot.warm { background: #fde7dc; border-color: var(--coral); }
 
 /* word-rise (ryie-fx splitwords) */
 .fx-word { display: inline-block; overflow: hidden; vertical-align: top; }
-.fx-word-in { display: inline-block; will-change: transform; }
-.js .fx-words .fx-word-in { transform: translateY(110%); }
+.fx-word-in { display: inline-block; will-change: transform; opacity: 1; }
+/* NOTE: words are hidden in JS (ryie-fx.js) not CSS, so no-JS = always visible */
 
 /* hero image (v2 rules live further below) */
 
@@ -352,8 +397,8 @@ body { padding-bottom: 64px; } /* room for callbar on mobile */
   body { padding-bottom: 0; }
   .callbar { display: none; }                 /* desktop uses nav CTA instead */
   .section { padding: 84px 0; }
-  .hero { padding: 130px 0 60px; }
-  .hero-grid { grid-template-columns: 1.05fr .95fr; align-items: center; gap: 50px; }
+  .hero { padding: 118px 0 60px; }
+  .hero-grid { grid-template-columns: 1.05fr .95fr; align-items: center; gap: 50px; min-height: 520px; }
   .hero-media img { height: 480px; }
   .about-grid { grid-template-columns: .9fr 1.1fr; align-items: center; }
   .about-media img { height: 460px; }

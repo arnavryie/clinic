@@ -38,18 +38,23 @@
         spans.push(inner);
       });
     }
-    if (reduced) { spans.forEach(function (s) { s.style.transform = "none"; s.style.opacity = 1; }); return; }
+    if (reduced) { spans.forEach(function (s) { s.style.transform = "none"; s.style.opacity = "1"; }); return; }
+    /* hide via inline style (not CSS) so fallback is always visible */
     spans.forEach(function (s) { s.style.transform = "translateY(110%)"; s.style.opacity = "0"; });
     if (hasGSAP()) {
-      window.gsap.to(spans, {
-        yPercent: 0, opacity: 1, duration: 0.9, ease: "power3.out",
-        stagger: 0.08, delay: 0.12,
-        onStart: function () { spans.forEach(function (s) { s.style.transform = ""; }); }
-      });
+      /* fromTo so GSAP owns both start and end — no onStart wipe needed */
+      window.gsap.fromTo(spans,
+        { yPercent: 110, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.08, delay: 0.1,
+          clearProps: "transform,opacity" }
+      );
     } else {
-      spans.forEach(function (s, i) {
-        s.style.transition = "transform .85s cubic-bezier(.16,1,.3,1) " + (0.1 + i * 0.08) + "s, opacity .85s ease " + (0.1 + i * 0.08) + "s";
-        requestAnimationFrame(function () { s.style.transform = "translateY(0)"; s.style.opacity = "1"; });
+      requestAnimationFrame(function () {
+        spans.forEach(function (s, i) {
+          s.style.transition = "transform .85s cubic-bezier(.16,1,.3,1) " + (0.1 + i * 0.09) + "s, opacity .7s ease " + (0.1 + i * 0.09) + "s";
+          s.style.transform = "translateY(0)";
+          s.style.opacity = "1";
+        });
       });
     }
   };
