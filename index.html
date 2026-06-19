@@ -132,7 +132,24 @@
       </div>
     </div>
 
-    <div class="wrap"><div class="pulse-divider reveal" aria-hidden="true"></div></div>
+    <div class="wrap">
+      <div class="pulse-divider reveal" aria-hidden="true">
+        <!-- ECG heartbeat widget sits centred on the divider line -->
+        <div class="heartbeat-wrap">
+          <svg viewBox="0 0 94 26" xmlns="http://www.w3.org/2000/svg">
+            <!--
+              ECG path:
+              flat → small blip → big QRS spike → settle → small T-wave → flat
+              All points hand-tuned to a 94×26 canvas, centre-line at y=13
+            -->
+            <path class="ecg-path"
+              d="M0,13 L22,13 L28,13 L33,5 L36,23 L39,2 L43,13 L55,13 L62,8 L66,13 L94,13"
+            />
+            <circle class="ecg-dot" cx="0" cy="13" r="3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
   </header>
 
   <!-- ===================== IMPACT / STATS ===================== -->

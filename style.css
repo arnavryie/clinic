@@ -442,6 +442,77 @@ body { padding-bottom: 64px; } /* room for callbar on mobile */
 .pulse-divider.light::before { background: linear-gradient(90deg, transparent, #fff, transparent); filter: drop-shadow(0 0 6px rgba(255,255,255,.9)); }
 @keyframes slidepulse { 0% { left: -10%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
 
+/* ── ECG heartbeat widget ── */
+.heartbeat-wrap {
+  position: absolute;
+  /* sit right on the divider line, centred horizontally */
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px; height: 36px;
+  overflow: hidden;
+  pointer-events: none;
+  /* small frosted pill so it sits on any bg */
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  border: 1px solid rgba(25,194,176,.22);
+  box-shadow: 0 2px 12px -4px rgba(15,148,136,.18);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.heartbeat-wrap svg {
+  width: 94px; height: 26px; overflow: visible; display: block;
+}
+
+/* The ECG path draws itself, then the glow dot rides it */
+.ecg-path {
+  fill: none;
+  stroke: #0f9488;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* total path length ≈ 160 — measured via getTotalLength() */
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: ecg-draw 1.8s cubic-bezier(.4,0,.2,1) infinite;
+  filter: drop-shadow(0 0 3px rgba(25,194,176,.9));
+}
+
+.ecg-dot {
+  r: 3;
+  fill: #19c2b0;
+  filter: drop-shadow(0 0 4px rgba(25,194,176,1));
+  animation: ecg-dot-move 1.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+@keyframes ecg-draw {
+  0%   { stroke-dashoffset: 160; opacity: 1; }
+  70%  { stroke-dashoffset: 0;   opacity: 1; }
+  85%  { stroke-dashoffset: 0;   opacity: 1; }
+  100% { stroke-dashoffset: 0;   opacity: 0; }
+}
+
+@keyframes ecg-dot-move {
+  /* dot travels along the path — approximate key positions */
+  0%   { cx: 0;  cy: 13; opacity: 0; }
+  5%   {                  opacity: 1; }
+  20%  { cx: 28; cy: 13; }
+  28%  { cx: 35; cy: 3;  }   /* first spike up   */
+  32%  { cx: 38; cy: 22; }   /* trough           */
+  36%  { cx: 41; cy: 2;  }   /* main peak        */
+  42%  { cx: 47; cy: 13; }   /* settle           */
+  55%  { cx: 58; cy: 13; }
+  62%  { cx: 65; cy: 7;  }   /* small bump       */
+  68%  { cx: 72; cy: 13; }
+  88%  { cx: 94; cy: 13; opacity: 1; }
+  100% { cx: 94; cy: 13; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecg-path { animation: none; stroke-dashoffset: 0; }
+  .ecg-dot  { animation: none; cx: 94; cy: 13; }
+}
+
 /* hero refinements */
 .hero { position: relative; }
 .hero .wrap { position: relative; z-index: 1; }
