@@ -1,0 +1,12 @@
+{
+  "name": "sanchi-physio",
+  "version": "2.0.0",
+  "description": "Sanchi Physiotherapy Clinic — Dr. Giridhar Tagade, Mul (Chandrapur), Maharashtra",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "Arnav Tagade (@arnavryie)",
+  "license": "ISC"
+}
